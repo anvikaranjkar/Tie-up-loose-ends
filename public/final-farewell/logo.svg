@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 80" role="img" aria-label="Loose Ends">
+  <defs>
+    <style>
+      .le-word { font-family: Georgia, 'Times New Roman', serif; font-weight: 700; fill: #f2ede1; }
+      .le-thread { fill: none; stroke: #e8b84b; stroke-width: 2.5; stroke-linecap: round; }
+    </style>
+  </defs>
+  <text x="0" y="42" font-size="34" class="le-word" letter-spacing="0.5">LOOSE</text>
+  <text x="0" y="72" font-size="34" class="le-word" letter-spacing="1">ENDS</text>
+  <path class="le-thread" d="M 178 60 C 200 60, 195 40, 215 40 S 235 68, 255 55 S 268 34, 285 40" />
+  <circle cx="285" cy="40" r="3" fill="#e8b84b" />
+</svg>
