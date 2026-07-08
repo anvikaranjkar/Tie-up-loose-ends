@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ArrowLeft, Check, FileCheck2, Loader2, ShieldCheck, UploadCloud } from 'lucide-react'
 import Image from 'next/image'
@@ -170,16 +170,13 @@ function UploadStep({ onDone }: { onDone: () => void }) {
   )
 }
 
-// The one-time code is fixed for the scripted flow; a constant keeps it out
-// of render-time ref reads.
-const VERIFY_CODE = '4826'
-
 function VerifyStep({ onDone }: { onDone: () => void }) {
   const [name, setName] = useState('')
   const [sent, setSent] = useState(false)
   const [otp, setOtp] = useState('')
   const [confirmed, setConfirmed] = useState(false)
   const [showCode, setShowCode] = useState(false)
+  const codeRef = useRef('4826')
 
   useEffect(() => {
     if (!sent) return
@@ -188,7 +185,7 @@ function VerifyStep({ onDone }: { onDone: () => void }) {
   }, [sent])
 
   useEffect(() => {
-    if (otp.replace(/\s/g, '') === VERIFY_CODE) {
+    if (otp.replace(/\s/g, '') === codeRef.current) {
       const id = window.setTimeout(() => {
         setConfirmed(true)
         window.setTimeout(onDone, 1200)
@@ -215,7 +212,7 @@ function VerifyStep({ onDone }: { onDone: () => void }) {
               <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="flex items-center gap-3 rounded-lg border border-accent/40 bg-accent/10 p-3">
                 <Mail className="size-4 text-accent" />
                 <p className="font-serif text-xs text-foreground">
-                  New email &mdash; <b>Your Final Farewell code is {VERIFY_CODE}</b>
+                  New email &mdash; <b>Your Final Farewell code is {codeRef.current}</b>
                 </p>
               </motion.div>
             )}

@@ -271,9 +271,6 @@ function SupportChat() {
   const [typing, setTyping] = useState(true)
   const scroller = useRef<HTMLDivElement>(null)
 
-  // Drives the scripted "agent is typing…" indicator between messages. The
-  // synchronous toggles here are intentional async sequencing, not derived
-  // state, so the indicator shows while the next line is pending.
   useEffect(() => {
     if (shown >= SUPPORT_SCRIPT.length) {
       setTyping(false)

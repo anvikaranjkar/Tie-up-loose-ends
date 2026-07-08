@@ -19,7 +19,7 @@ import {
   Sparkles,
 } from 'lucide-react'
 import Image from 'next/image'
-import { ACCOUNTS, CLUES, DESKTOP_APPS, MEDIA } from '@/lib/loose-ends/data'
+import { ACCOUNTS, CLUES, DESKTOP_APPS, MEDIA, type Account } from '@/lib/loose-ends/data'
 import { useClock } from '../use-clock'
 import { useGame } from '../store'
 import { RetroWindow } from '../ui/window'

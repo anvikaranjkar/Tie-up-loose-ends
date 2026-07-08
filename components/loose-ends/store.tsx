@@ -121,10 +121,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const [hydrated, setHydrated] = useState(false)
   const [savedScreen, setSavedScreen] = useState<ScreenId | null>(null)
 
-  // Read any persisted save once, on the client. This MUST run in an effect
-  // (not a lazy initializer) so server and client render the same initial
-  // markup and avoid a hydration mismatch. The one-time setState here is the
-  // intended pattern for syncing with an external store (localStorage).
+  // Read any persisted save once, on the client, to avoid SSR hydration drift.
   useEffect(() => {
     const saved = loadSave()
     if (saved) {

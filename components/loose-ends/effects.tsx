@@ -1,18 +1,19 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { cn } from '@/lib/utils'
 
-type Mote = { id: number; left: number; size: number; duration: number; delay: number; drift: string; opacity: number }
+/** Only render children after mount — avoids SSR/CSR mismatch for random visuals. */
+function useMounted() {
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
+  return mounted
+}
 
 /** Floating dust motes drifting up through light. Pure CSS, GPU-friendly. */
 export function DustParticles({ count = 26, className }: { count?: number; className?: string }) {
-  // Randomized values are generated after mount (in an effect, never during
-  // render) so SSR output is stable and rendering stays pure.
-  const [motes, setMotes] = useState<Mote[]>([])
-
-  useEffect(() => {
-    setMotes(
+  const motes = useMemo(
+    () =>
       Array.from({ length: count }).map((_, i) => ({
         id: i,
         left: Math.random() * 100,
@@ -22,10 +23,11 @@ export function DustParticles({ count = 26, className }: { count?: number; class
         drift: `${(Math.random() - 0.5) * 120}px`,
         opacity: 0.25 + Math.random() * 0.5,
       })),
-    )
-  }, [count])
+    [count],
+  )
 
-  if (motes.length === 0) return null
+  const mounted = useMounted()
+  if (!mounted) return null
 
   return (
     <div className={cn('pointer-events-none absolute inset-0 overflow-hidden', className)} aria-hidden="true">
@@ -49,14 +51,10 @@ export function DustParticles({ count = 26, className }: { count?: number; class
   )
 }
 
-type Drop = { id: number; left: number; duration: number; delay: number; height: number; opacity: number }
-
 /** Diagonal rain, used behind windows. */
 export function Rain({ count = 90, className }: { count?: number; className?: string }) {
-  const [drops, setDrops] = useState<Drop[]>([])
-
-  useEffect(() => {
-    setDrops(
+  const drops = useMemo(
+    () =>
       Array.from({ length: count }).map((_, i) => ({
         id: i,
         left: Math.random() * 100,
@@ -65,10 +63,10 @@ export function Rain({ count = 90, className }: { count?: number; className?: st
         height: 30 + Math.random() * 60,
         opacity: 0.1 + Math.random() * 0.25,
       })),
-    )
-  }, [count])
-
-  if (drops.length === 0) return null
+    [count],
+  )
+  const mounted = useMounted()
+  if (!mounted) return null
   return (
     <div className={cn('pointer-events-none absolute inset-0 overflow-hidden', className)} aria-hidden="true">
       {drops.map((d) => (
